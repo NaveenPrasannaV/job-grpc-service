@@ -1,20 +1,45 @@
 syntax = "proto3";
 
-option java_package = "org.nit.jobapp";
+option java_package = "org.nit.jobgrpc";
 option java_multiple_files = true;
 
 service JobService {
 
   rpc GetJob (JobRequest) returns (JobResponse);
 
+  rpc GetAllJobs (Empty) returns (JobList);
+
+  rpc AddJob (JobResponse) returns (JobResponse);
+
+  rpc UpdateJob (JobResponse) returns (JobResponse);
+
+  rpc DeleteJob (JobRequest) returns (DeleteResponse);
+
+  rpc SearchJobs (SearchRequest) returns (JobList);
 }
+
+message Empty {}
 
 message JobRequest {
   int32 postId = 1;
 }
 
+message SearchRequest {
+  string keyword = 1;
+}
+
+message DeleteResponse {
+  string message = 1;
+}
+
 message JobResponse {
   int32 postId = 1;
-  string profile = 2;
-  string description = 3;
+  string postProfile = 2;
+  string postDesc = 3;
+  int32 reqExperience = 4;
+  repeated string postTechStack = 5;
+}
+
+message JobList {
+  repeated JobResponse jobs = 1;
 }
